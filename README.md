@@ -1,11 +1,9 @@
 # Agent Ready Codebase
 > This repository is a system for building a **consistent, well-structured codebase** without having to monitor every change an agent makes. Custom architecture rules constrain the codebase, while lint and CI use static analysis to mechanically enforce the rules they can check. This respository uses [Void](https://void.cloud/guide/), but its approach is framework-independent. It tests ways to build consistent, well-structured codebases.
-<br/>
-<br/>
-This structure is not perfect, so adapt it to your framework. Whenever an agent makes a mistake, prevent it from recurring by enforcing the fix in the codebase or lint rules. If you cannot enforce it in code, add the guidance to Rules first, then to `AGETNS.md`
-<br/>
-<br/>
-Make it yours! (〃ω〃)
+>
+> This structure is not perfect, so adapt it to your framework. Whenever an agent makes a mistake, prevent it from recurring by enforcing the fix in the codebase or lint rules. If you cannot enforce it in code, add the guidance to Rules first, then to `AGETNS.md`
+>
+> Make it yours! (〃ω〃)
 
 ## If you want to see how it works
 
