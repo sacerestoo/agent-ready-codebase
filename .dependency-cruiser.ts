@@ -1,16 +1,32 @@
 import {
   applicationDirectories,
+  architecture,
   architectureDirectories,
 } from "./tooling/architecture/paths.ts";
 
-const featurePath = architectureDirectories.features;
-const sharedPath = architectureDirectories.shared;
+function escapePattern(path: string): string {
+  return path.replaceAll(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+}
+
+const featurePath = escapePattern(architectureDirectories.features);
+const sharedPath = escapePattern(architectureDirectories.shared);
+const databaseModulePath = `^(?:${architecture.databaseModulePathPatterns.join("|")})`;
+const databaseImporterPath = `^(?:${architecture.databaseImporterPathPatterns.join("|")})`;
 const sharedForbiddenPath = `^(?:${applicationDirectories
-  .filter((directory) => directory !== sharedPath)
+  .filter((directory) => directory !== architectureDirectories.shared)
+  .map((directory) => escapePattern(directory))
   .join("|")})/`;
 
 export default {
   forbidden: [
+    {
+      name: "database-modules-only-from-configured-boundary",
+      comment:
+        "Database modules may only be imported by configured database entrypoints.",
+      severity: "error",
+      from: { pathNot: databaseImporterPath },
+      to: { path: databaseModulePath },
+    },
     {
       name: "features-not-to-features",
       comment: "Features must not depend on other features.",
@@ -28,7 +44,7 @@ export default {
       from: { pathNot: `^${featurePath}/` },
       to: {
         path: `^${featurePath}/[^/]+/`,
-        pathNot: `^${featurePath}/[^/]+/index\\.ts$`,
+        pathNot: `^${featurePath}/[^/]+/index[.]ts$`,
       },
     },
     {

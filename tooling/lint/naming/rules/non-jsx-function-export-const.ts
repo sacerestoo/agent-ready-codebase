@@ -26,10 +26,9 @@ const nonJsxFunctionExportConst = defineRule({
 
         for (const statement of getChildren(input, "body")) {
           const isNamedExport = statement.type === "ExportNamedDeclaration";
-          const declaration =
-            isNamedExport || statement.type === "ExportDefaultDeclaration"
-              ? getChild(statement, "declaration")
-              : statement;
+          const isDefaultExport = statement.type === "ExportDefaultDeclaration";
+          if (!isNamedExport && !isDefaultExport) continue;
+          const declaration = getChild(statement, "declaration");
 
           if (declaration?.type === "FunctionDeclaration") {
             if (!containsJsx(getChild(declaration, "body"))) {

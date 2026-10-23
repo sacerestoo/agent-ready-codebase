@@ -10,12 +10,7 @@ it("all registered naming rules have matching RuleTester suites", () => {
     "no-javascript-files",
     "no-enum",
     "no-else",
-    "component-default-export",
-    "custom-hook-name",
     "camel-case-identifiers",
-    "callback-prop-name",
-    "component-handler-name",
-    "non-jsx-function-export-const",
     "pascal-case-types",
   ]);
 });

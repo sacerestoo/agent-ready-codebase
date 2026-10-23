@@ -1,5 +1,6 @@
 import { RuleTester } from "vite-plus/lint/plugins-dev";
-import { describe, it } from "vite-plus/test";
+import { describe, expect, it } from "vite-plus/test";
+import reactNamingPlugin from "../../react-naming.ts";
 import callbackPropName from "../rules/callback-prop-name.ts";
 import componentDefaultExport from "../rules/component-default-export.ts";
 import componentHandlerName from "../rules/component-handler-name.ts";
@@ -13,6 +14,16 @@ RuleTester.it = (name, callback): void => {
 
 const tester = new RuleTester({
   languageOptions: { parserOptions: { lang: "tsx" } },
+});
+
+it("registers the React naming rules covered below", () => {
+  expect(Object.keys(reactNamingPlugin.rules)).toEqual([
+    "component-default-export",
+    "custom-hook-name",
+    "callback-prop-name",
+    "component-handler-name",
+    "non-jsx-function-export-const",
+  ]);
 });
 
 tester.run("component-default-export", componentDefaultExport, {

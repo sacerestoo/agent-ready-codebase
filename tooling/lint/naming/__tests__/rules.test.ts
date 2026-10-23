@@ -146,12 +146,11 @@ tester.run("non-jsx-function-export-const", nonJsxFunctionExportConst, {
     "export default function HomePage() { return <main />; }",
     "export const HomePage = () => <main />;",
     "const value = 1;",
+    "function getUser() { return user; }",
+    "const getUser = () => user;",
+    "const getUser = function () { return user; };",
   ],
   invalid: [
-    {
-      code: "function getUser() { return user; }",
-      errors: [{ messageId: "exportConst" }],
-    },
     {
       code: "export function getUser() { return user; }",
       errors: [{ messageId: "exportConst" }],
@@ -161,15 +160,7 @@ tester.run("non-jsx-function-export-const", nonJsxFunctionExportConst, {
       errors: [{ messageId: "exportConst" }],
     },
     {
-      code: "const getUser = () => user;",
-      errors: [{ messageId: "exportConst" }],
-    },
-    {
       code: "export let getUser = () => user;",
-      errors: [{ messageId: "exportConst" }],
-    },
-    {
-      code: "const getUser = function () { return user; };",
       errors: [{ messageId: "exportConst" }],
     },
   ],

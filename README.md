@@ -3,15 +3,15 @@
 > This repository is a system for building a **consistent, well-structured
 > codebase** without having to monitor every change an agent makes. Custom
 > architecture rules constrain the codebase, while lint and CI use static
-> analysis to mechanically enforce the rules they can check. This respository
-> uses [Void](https://void.cloud/guide/), but its approach is
+> analysis to enforce the rules they can check. This example app uses
+> [Void](https://void.cloud/guide/), while its structural checker is
 > framework-independent. It tests ways to build consistent, well-structured
 > codebases.
 >
 > This structure is not perfect, so adapt it to your framework. Whenever an
 > agent makes a mistake, prevent it from recurring by enforcing the fix in the
-> codebase or lint rules. If you cannot enforce it in code, add the guidance to
-> Rules first, then to `AGETNS.md`
+> codebase or lint rules. If a rule cannot be checked automatically, add concise
+> guidance to `AGENTS.md` and a concrete example under `docs/` when useful.
 >
 > Make it yours! (〃ω〃)
 
@@ -34,12 +34,13 @@ bun run dev
 
 ## Codebase
 
-- Keep one Void app and one package at the repository root. The architecture
-  check requires a single root `package.json`, a single root `void.config.ts`,
-  and no `workspaces` field in `package.json`.
-- Keep root directories in the allowlist. The architecture check rejects
-  directories that are not listed in `rootDirectories` in
-  `tooling/architecture/paths.ts`.
+- Keep one app and one package at the repository root. The selected project
+  policy in `tooling/architecture/project.ts` defines root folders, config
+  files, feature subfolders, and UI file types.
+- The architecture checker and dependency-cruiser use the same project policy.
+  The checker itself has no Void-specific paths or file types, so another
+  framework can use the same checks by changing that policy and selecting its
+  own lint rules.
 - Keep only `ui/` and `__tests__/` inside feature directories. Create either
   directory only when needed. The architecture check rejects other feature
   subdirectories.
@@ -47,6 +48,10 @@ bun run dev
 - Keep features independent. `dependency-cruiser` blocks imports from one
   feature into another.
 - Export feature code to other folders through `features/<name>/index.ts` only.
+- Restrict database module imports to the paths listed in
+  `tooling/architecture/project.ts`. This Void project allows them only inside
+  `routes/api/<feature>/**`; pages and browser code call those handlers with
+  typed fetch.
 - Keep `shared/` independent of app code such as `pages/`, `routes/`, and
   `features/`.
 - Use code in `features/` and `shared/` from the app. Tests are exempt from the
@@ -58,6 +63,10 @@ bun run dev
 
 ### Lint
 
+- Toggle optional lint profiles in `tooling/lint/profiles.ts`. `react`,
+  `vitePlus`, `voidProject`, and `tanstackQuery` each control only their own
+  rules. The shared checks remain enabled. Turning off `vitePlus` lint does not
+  replace the Vite+ build, test, or formatting tools.
 - Treat correctness, strictness, and suspicious-code lint rules as errors.
   Type-aware lint checks the code.
 - Do not leave unused variables or duplicate imports.

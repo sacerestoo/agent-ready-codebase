@@ -2,16 +2,17 @@ import tailwindcss from "@tailwindcss/vite";
 import { voidReact } from "@void/react/plugin";
 import { defineConfig, type ViteUserConfig } from "vite-plus";
 import { voidPlugin } from "void";
-import { webSourceGlobs } from "./tooling/architecture/paths.ts";
 import {
-  commonJsPlugins,
-  commonLintCategories,
-  commonLintOptions,
-  commonPlugins,
-  commonRuleOverrides,
-  commonRules,
-} from "./tooling/lint/common";
-import { webLint } from "./tooling/lint/web";
+  createLintConfig,
+  type LintProfileSelection,
+} from "./tooling/lint/profiles.ts";
+
+const enabledLintProfiles = {
+  react: true,
+  vitePlus: true,
+  voidProject: true,
+  tanstackQuery: true,
+} as const satisfies LintProfileSelection;
 
 const config: ViteUserConfig = {
   test: {
@@ -56,20 +57,7 @@ const config: ViteUserConfig = {
       ],
     },
   },
-  lint: {
-    plugins: [...commonPlugins],
-    jsPlugins: [...commonJsPlugins],
-    categories: commonLintCategories,
-    rules: commonRules,
-    options: commonLintOptions,
-    overrides: [
-      {
-        files: webSourceGlobs,
-        ...webLint,
-      },
-      ...commonRuleOverrides,
-    ],
-  },
+  lint: createLintConfig(enabledLintProfiles),
   run: {
     cache: true,
   },
