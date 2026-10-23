@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "bun run check && vp build",
-    "check": "vp check && bun run check:architecture",
+    "check": "void prepare && vp check && bun run check:architecture",
     "check:architecture": "bun run tooling/check-architecture.ts",
     "check:env": "bun run tooling/check-env.ts && void env check",
     "deploy": "void deploy --platform cloudflare",
