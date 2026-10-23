@@ -54,7 +54,9 @@ const allowedRootDirectories = new Set<string>(rootDirectories);
 const addedRootDirectories = readdirSync(root, { withFileTypes: true })
   .filter(
     (entry) =>
-      entry.isDirectory() && !allowedRootDirectories.has(entry.name),
+      entry.isDirectory() &&
+      !generatedDirectorySet.has(entry.name) &&
+      !allowedRootDirectories.has(entry.name),
   )
   .map((entry) => entry.name);
 
