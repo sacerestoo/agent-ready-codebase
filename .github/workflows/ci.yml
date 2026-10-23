@@ -17,8 +17,6 @@ jobs:
         with:
           node-version: 24
       - uses: oven-sh/setup-bun@v2
-      - name: Prepare placeholder environment
-        run: printf '%s\n' 'DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres' > .env
       - run: bun install --frozen-lockfile
       - run: bun run test
       - run: bun run build
