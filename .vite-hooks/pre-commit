@@ -2,5 +2,6 @@
 
 set -e
 
-bun run check:env
 vp staged
+bun run check
+bun run check:env

@@ -101,8 +101,20 @@ bun run dev
 - Run `bun run build`. It runs `bun run check` first. The check runs `vp check`
   and validates the repository structure and dependencies before Vite+ builds
   the app.
-- The local pre-commit hook runs `check:env` to validate `.env` against the
-  `env.ts` schema. CI does not need a local `.env` file.
+- The local pre-commit hook runs `vp staged`, `bun run check`, and
+  `bun run check:env`, in that order. The staged-file rule in `vite.config.ts`
+  runs `vp check --fix` on staged files before the full checks. A failed command
+  stops the hook, so later commands do not run. CI does not need a local `.env`
+  file.
+- The local pre-push hook runs `bun run test` and then `bun run build`. A failed
+  command stops the hook. `build` runs `check` before building.
+- If you use pull requests, block direct pushes to `main` and require the
+  `check` status before merging. CI runs on each pull request, so merge only
+  after it passes.
+- If you do not use pull requests, allow direct pushes to `main`. Run
+  `bun run test` and `bun run build` before pushing. The pre-push hook runs both
+  commands. CI on a push to `main` reports results after the push, so it cannot
+  stop a failed change from reaching `main`.
 
 ## Agent instructions
 
