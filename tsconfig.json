@@ -8,6 +8,7 @@
     "noEmit": true,
     "paths": {
       "@/*": ["./*"],
+      "@schema": ["./db/schema.ts"],
       "@/void/routes": ["./.void/routes.d.ts"]
     },
     "strict": true,
