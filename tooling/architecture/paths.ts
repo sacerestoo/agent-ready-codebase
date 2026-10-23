@@ -36,10 +36,7 @@ export const rootDirectories = [
   "tooling",
 ] as const;
 
-export const featureSubdirectories = [
-  "__tests__",
-  "ui",
-] as const;
+export const featureSubdirectories = ["__tests__", "ui"] as const;
 
 export const rootPackageManifest = "package.json" as const;
 export const rootVoidConfig = "void.config.ts" as const;
