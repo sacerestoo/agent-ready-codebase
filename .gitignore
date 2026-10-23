@@ -9,3 +9,4 @@ dist
 .void-wrangler.jsonc
 *.tsbuildinfo
 .DS_Store
+.audit
