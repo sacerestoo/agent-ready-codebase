@@ -3,6 +3,11 @@ import { defineConfig } from "void/config";
 
 export default defineConfig({
   target: "cloudflare",
+  head: {
+    meta: [
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+    ],
+  },
   auth: { providers: ["email", "google"] },
   cloudflare: { name: "void-web" },
   worker: {
