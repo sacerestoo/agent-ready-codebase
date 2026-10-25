@@ -1,57 +1,51 @@
-import type { ComponentProps, ReactElement, ReactNode } from "react";
+import type { ReactElement } from "react";
 import Field from "@/shared/ui/field";
-import { InputGroup, InputGroupInput } from "@/shared/ui/input-group";
-import Label from "@/shared/ui/label";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/shared/ui/input-group";
 import type { useAuthForm } from "../use-auth-form";
 
 type AuthFieldsProps = { auth: ReturnType<typeof useAuthForm> };
-
-const authField = ({
-  label,
-  input,
-}: Readonly<{
-  label: ReactNode;
-  input: Readonly<ComponentProps<"input">>;
-}>): ReactElement => (
-  <Field>
-    <Label htmlFor={input.id}>{label}</Label>
-    <InputGroup size="2xl">
-      <InputGroupInput
-        className="bg-transparent shadow-none focus-visible:ring-0"
-        {...input}
-      />
-    </InputGroup>
-  </Field>
-);
 
 export default function AuthFields({
   auth,
 }: Readonly<AuthFieldsProps>): ReactElement {
   return (
-    <>
-      {authField({
-        label: "이메일",
-        input: {
-          id: "auth-email",
-          autoComplete: "email",
-          onChange: auth.onEmailChange,
-          required: true,
-          type: "email",
-          value: auth.email,
-        },
-      })}
-      {auth.isOtpSent &&
-        authField({
-          label: "이메일 인증 코드",
-          input: {
-            id: "auth-otp",
-            autoComplete: "one-time-code",
-            inputMode: "numeric",
-            onChange: auth.onOtpChange,
-            required: true,
-            value: auth.otp,
-          },
-        })}
-    </>
+    <Field>
+      <InputGroup
+        className="bg-background"
+        size="xl"
+      >
+        <InputGroupInput
+          className="bg-transparent shadow-none hover:bg-transparent! focus-visible:ring-0"
+          id="auth-email"
+          aria-invalid={auth.isEmailInvalid || undefined}
+          autoComplete="off"
+          onChange={auth.onEmailChange}
+          required
+          type="email"
+          value={auth.email}
+          placeholder="Email"
+        />
+        <InputGroupAddon
+          align="inline-end"
+          className="pr-1"
+        >
+          <InputGroupButton
+            disabled={!auth.email || auth.isSubmitting}
+            pending={auth.isSubmitting}
+            type="submit"
+            variant="outline"
+            size="sm"
+            className="h-8 text-primary hover:bg-background! disabled:bg-transparent dark:disabled:bg-transparent"
+          >
+            Send code
+          </InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+    </Field>
   );
 }

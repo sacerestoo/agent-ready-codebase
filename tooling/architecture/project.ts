@@ -33,6 +33,7 @@ export const architecture = {
     ".vite-hooks",
     "docs",
     "outputs",
+    "public",
     "styles",
     "tooling",
   ],
