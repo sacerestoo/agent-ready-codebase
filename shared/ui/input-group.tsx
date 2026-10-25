@@ -9,7 +9,7 @@ import { cn } from "cn";
 import * as React from "react";
 
 const inputGroupVariants = cva(
-  "overflow-hidden group/input-group relative flex w-full min-w-0 items-center rounded-lg shadow-default transition-[color,border-color,box-shadow] outline-none hover:bg-muted/50 has-[[data-slot=input-group-control]:focus-visible]:hover:bg-transparent in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-disabled:bg-input/50 has-disabled:opacity-50 has-[[data-slot=input-group-control]:focus-visible]:border-0 has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-brand/50 has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-2 has-[[data-slot][aria-invalid=true]]:ring-destructive/20 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto dark:bg-input/30 dark:has-disabled:bg-input/80 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:pr-1.5 has-[>[data-align=inline-start]]:pl-1.5",
+  "overflow-hidden group/input-group relative flex w-full min-w-0 items-center rounded-lg shadow-default transition-[color,border-color,box-shadow] outline-none hover:bg-muted/50 has-[[data-slot=input-group-control]:focus-visible]:hover:bg-transparent in-data-[slot=combobox-content]:focus-within:border-inherit in-data-[slot=combobox-content]:focus-within:ring-0 has-[[data-slot=input-group-control]:disabled]:bg-input/50 has-[[data-slot=input-group-control]:disabled]:opacity-50 has-[[data-slot=input-group-control]:focus-visible]:border-0 has-[[data-slot=input-group-control]:focus-visible]:ring-2 has-[[data-slot=input-group-control]:focus-visible]:ring-brand has-[[data-slot][aria-invalid=true]]:border-destructive has-[[data-slot][aria-invalid=true]]:ring-2 has-[[data-slot][aria-invalid=true]]:ring-destructive/60 has-[>[data-align=block-end]]:h-auto has-[>[data-align=block-end]]:flex-col has-[>[data-align=block-start]]:h-auto has-[>[data-align=block-start]]:flex-col has-[>textarea]:h-auto dark:bg-input/30 dark:has-[[data-slot=input-group-control]:disabled]:bg-input/80 dark:has-[[data-slot][aria-invalid=true]]:ring-destructive/40 has-[>[data-align=block-end]]:[&>input]:pt-3 has-[>[data-align=block-start]]:[&>input]:pb-3 has-[>[data-align=inline-end]]:pr-1.5 has-[>[data-align=inline-start]]:pl-1.5",
   {
     variants: {
       size: {
@@ -88,23 +88,19 @@ function InputGroupAddon({
   );
 }
 
-const inputGroupButtonVariants = cva(
-  "flex items-center gap-2 text-sm shadow-none",
-  {
-    variants: {
-      size: {
-        xs: "h-6 gap-1 rounded-[calc(var(--radius)-3px)] px-1.5 [&>svg:not([class*='size-'])]:size-3.5",
-        sm: "h-7",
-        "icon-xs":
-          "size-6 rounded-[calc(var(--radius)-3px)] p-0 has-[>svg]:p-0",
-        "icon-sm": "size-7 p-0 has-[>svg]:p-0",
-      },
-    },
-    defaultVariants: {
-      size: "xs",
+const inputGroupButtonVariants = cva("flex items-center gap-2 text-sm", {
+  variants: {
+    size: {
+      xs: "h-6 gap-1 rounded-[calc(var(--radius)-3px)] px-1.5 [&>svg:not([class*='size-'])]:size-3.5",
+      sm: "h-7",
+      "icon-xs": "size-6 rounded-[calc(var(--radius)-3px)] p-0 has-[>svg]:p-0",
+      "icon-sm": "size-7 p-0 has-[>svg]:p-0",
     },
   },
-);
+  defaultVariants: {
+    size: "xs",
+  },
+});
 
 function InputGroupButton({
   className,
@@ -155,7 +151,7 @@ function InputGroupInput({
       size={size}
       data-slot="input-group-control"
       className={cn(
-        "h-full flex-1 rounded-none border-0 bg-transparent shadow-none ring-0 hover:bg-transparent focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent",
+        "h-full flex-1 rounded-none border-0 bg-transparent text-sm shadow-none ring-0 hover:bg-transparent focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 dark:bg-transparent dark:disabled:bg-transparent",
         className,
       )}
       {...props}
