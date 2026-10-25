@@ -32,6 +32,9 @@ bunx --package vite-plus vp install
 bun run dev
 ```
 
+To try Creem test subscriptions in the app, follow the
+[Creem billing test guide](docs/creem-billing.md).
+
 ## Codebase
 
 - Keep one app and one package at the repository root. The selected project

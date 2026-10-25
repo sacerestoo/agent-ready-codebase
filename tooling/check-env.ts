@@ -2,7 +2,10 @@ import { readFile } from "node:fs/promises";
 
 type EnvEntry = { value: string };
 
-function readSchemaNames(source: string): Set<string> {
+function readSchemaNames(source: string): {
+  all: Set<string>;
+  required: Set<string>;
+} {
   const schemas = [...source.matchAll(/defineEnv\s*\(\s*\{([^}]*)\}\s*\)/gu)];
   if (schemas.length !== 1)
     throw new Error("env.ts must contain one defineEnv object.");
@@ -18,7 +21,15 @@ function readSchemaNames(source: string): Set<string> {
   if (names.size !== properties.length || names.size === 0) {
     throw new Error("env.ts has an unsupported or duplicate environment key.");
   }
-  return names;
+  const optionalNames = new Set(
+    [...body.matchAll(/([A-Z_][A-Z0-9_]*)\s*:[^,\n]*\.optional\(\)/gu)]
+      .map((property) => property[1])
+      .filter((name): name is string => name !== undefined),
+  );
+  return {
+    all: names,
+    required: new Set([...names].filter((name) => !optionalNames.has(name))),
+  };
 }
 
 function parseValue(rawValue: string): { valid: boolean; value: string } {
@@ -68,8 +79,12 @@ const [schemaSource, dotenvSource] = await Promise.all([
 const schemaNames = readSchemaNames(schemaSource);
 const dotenvEntries = readDotenvEntries(dotenvSource);
 const dotenvNames = new Set(dotenvEntries.keys());
-const missingValues = [...schemaNames].filter((name) => !dotenvNames.has(name));
-const extraValues = [...dotenvNames].filter((name) => !schemaNames.has(name));
+const missingValues = [...schemaNames.required].filter(
+  (name) => !dotenvNames.has(name),
+);
+const extraValues = [...dotenvNames].filter(
+  (name) => !schemaNames.all.has(name),
+);
 const emptyValues = [...dotenvEntries]
   .filter(([, entry]) => entry.value.trim() === "")
   .map(([name]) => name);
