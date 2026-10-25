@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetch } from "void/client";
+import { auth } from "void/client/react";
 import type { BillingSettings } from "./billing-settings";
-import { authClient } from "../../auth-client";
 import { getCreemCustomerId } from "./customer";
 import { subscriptionQueryOptions } from "./queries";
 
 type BillingQueries = {
   access: ReturnType<typeof useQuery<boolean>>;
-  session: ReturnType<typeof authClient.useSession>;
+  session: ReturnType<typeof auth.useSession>;
 };
 
 function useBillingQueries(billing: BillingSettings): BillingQueries {
@@ -19,7 +19,7 @@ function useBillingQueries(billing: BillingSettings): BillingQueries {
           billing.subscriptionProductReady,
       ),
     ),
-    session: authClient.useSession(),
+    session: auth.useSession(),
   };
 }
 
@@ -44,12 +44,11 @@ function useCheckoutActions(): CheckoutActions {
   });
   const portal = useMutation({
     mutationFn: async (): Promise<void> => {
-      const result = await authClient.creem.createPortal({ redirect: false });
-      if (result.error !== null) throw new Error(result.error.message);
-      if (result.data === null || result.data.url === "") {
-        throw new Error("Creem did not return a portal URL.");
-      }
-      window.location.assign(result.data.url);
+      const result = await fetch("/api/billing/portal", {
+        method: "POST",
+        body: {},
+      });
+      window.location.assign(result.url);
     },
   });
 
