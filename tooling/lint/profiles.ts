@@ -1,5 +1,9 @@
 import type { ViteUserConfig } from "vite-plus";
-import { webSourceGlobs } from "../architecture/paths.ts";
+import {
+  architectureDirectories,
+  sourceFileGlobs,
+  webSourceGlobs,
+} from "../architecture/paths.ts";
 import {
   commonJsPlugins,
   commonLintCategories,
@@ -40,6 +44,16 @@ export function createLintConfig(selection: LintProfileSelection) {
     options: commonLintOptions,
     overrides: [
       ...(selection.react ? [{ files: webSourceGlobs, ...reactLint }] : []),
+      ...(selection.react
+        ? [
+            {
+              files: sourceFileGlobs([`${architectureDirectories.shared}/ui`]),
+              rules: {
+                "react-codebase/component-default-export": "off" as const,
+              },
+            },
+          ]
+        : []),
       ...commonRuleOverrides,
     ],
   } satisfies NonNullable<ViteUserConfig["lint"]>;
