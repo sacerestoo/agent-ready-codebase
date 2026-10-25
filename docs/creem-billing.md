@@ -14,6 +14,9 @@ Send checkout and subscription events to the Test Mode webhook at
 `https://<public-dev-url>/api/auth/creem/webhook`. Expose the local app through
 an HTTPS tunnel.
 
+Set `CREEM_WEBHOOK_HOST` to the tunnel hostname, without `https://` or a path.
+Vite uses this value to allow the local webhook host.
+
 Required environment variables:
 
 ```ini
@@ -22,6 +25,7 @@ CREEM_WEBHOOK_SECRET=whsec_...
 CREEM_TEST_MODE=true
 CREEM_SUBSCRIPTIONS_ENABLED=true
 CREEM_SUBSCRIPTION_PRODUCT_ID=prod_...
+CREEM_WEBHOOK_HOST=<public-dev-host>
 ```
 
 ## Test the flow

@@ -7,4 +7,5 @@ export default defineEnv({
   CREEM_TEST_MODE: boolean().default(true),
   CREEM_SUBSCRIPTIONS_ENABLED: boolean().default(false),
   CREEM_SUBSCRIPTION_PRODUCT_ID: string().optional(),
+  CREEM_WEBHOOK_HOST: string().optional(),
 });

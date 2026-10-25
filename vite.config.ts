@@ -1,6 +1,6 @@
 import tailwindcss from "@tailwindcss/vite";
 import { voidReact } from "@void/react/plugin";
-import { defineConfig, type ViteUserConfig } from "vite-plus";
+import { defineConfig, loadEnv, type ViteUserConfig } from "vite-plus";
 import { voidPlugin } from "void";
 import {
   createLintConfig,
@@ -75,7 +75,15 @@ function getPlugins(mode: string) {
   ];
 }
 
-export default defineConfig(({ mode }) => ({
-  ...config,
-  plugins: getPlugins(mode),
-}));
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, import.meta.dirname, "");
+  const webhookHost = env.CREEM_WEBHOOK_HOST;
+
+  return {
+    ...config,
+    server: {
+      allowedHosts: webhookHost ? [webhookHost] : [],
+    },
+    plugins: getPlugins(mode),
+  };
+});
