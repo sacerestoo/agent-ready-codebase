@@ -22,38 +22,38 @@ features/
   auth/
     index.ts
     ui/
-  todos/
+  projects/
     index.ts
     api.ts
     queries.ts
     ui/
-    use-todos.ts
+    use-projects.ts
 ```
 
 Do import a feature through its `index.ts` from outside that feature:
 
 ```tsx
 import { AuthForm, SignOutButton } from "@/features/auth";
-import TodosApp from "@/features/todos";
+import ProjectsApp from "@/features/projects";
 ```
 
 Do let a page compose features and pass a generic UI slot when needed:
 
 ```tsx
-<TodosApp
+<ProjectsApp
   headerAction={<SignOutButton />}
   userId={session.user.id}
 />
 ```
 
-Do not put authentication UI in `features/todos/`, import another feature from
-inside a feature, or import a feature's internal file from a page:
+Do not put authentication UI in `features/projects/`, import another feature
+from inside a feature, or import a feature's internal file from a page:
 
 ```tsx
-// Do not do this inside features/todos/.
+// Do not do this inside features/projects/.
 import SignOutButton from "@/features/auth/ui/sign-out-button";
 // Do not bypass the feature's public entry point from a page.
-import TodoRow from "@/features/todos/ui/todo-row";
+import ProjectRow from "@/features/projects/ui/project-row";
 ```
 
 Move code shared by multiple features to `shared/`. Shared code must not import
@@ -69,20 +69,20 @@ query definitions, and other non-UI functions at the feature root. UI files may
 contain component types, but their functions should return JSX.
 
 ```text
-features/todos/
+features/projects/
   api.ts
   queries.ts
-  use-todos.ts
-  todos.server.ts
+  use-projects.ts
+  projects.server.ts
   ui/
-    todo-row.tsx
-    todos-list.tsx
+    project-row.tsx
+    projects-list.tsx
 ```
 
 Do keep a feature's query keys and query options together in `queries.ts`:
 
 ```text
-features/todos/queries.ts  # query keys and query options
+features/projects/queries.ts  # query keys and query options
 ```
 
 Do not put hooks or query options in `ui/`, or split a feature's query key and
@@ -100,7 +100,7 @@ API handlers with `fetch` from `void/client`:
 // pages/index.server.ts or a feature client module
 import { fetch } from "void/client";
 
-const todos = await fetch("/api/todos");
+const projects = await fetch("/api/projects");
 ```
 
 Void's typed fetch also works during SSR and in server handlers. App-local calls
@@ -115,13 +115,13 @@ Do split schemas by domain and export them from the root barrel:
 ```text
 db/
   schema/
-    todos.ts
+    projects.ts
   schema.ts
 ```
 
 ```ts
 // db/schema.ts
-export * from "./schema/todos";
+export * from "./schema/projects";
 ```
 
 Do not collect every domain's table definitions in `db/schema.ts`.
