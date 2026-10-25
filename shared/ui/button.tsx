@@ -19,6 +19,8 @@ const buttonVariants = cva(
           "hover:bg-muted/50 hover:text-foreground aria-expanded:bg-muted/50 aria-expanded:text-foreground dark:hover:bg-muted/50",
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
+        danger:
+          "bg-destructive text-primary-foreground hover:brightness-90 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -45,7 +47,7 @@ const buttonVariants = cva(
   },
 );
 
-export default function Button({
+function Button({
   className,
   variant = "default",
   size = "default",
@@ -85,4 +87,5 @@ export default function Button({
   );
 }
 
+export default Button;
 export { buttonVariants };
