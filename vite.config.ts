@@ -1,5 +1,6 @@
 import tailwindcss from "@tailwindcss/vite";
 import { voidReact } from "@void/react/plugin";
+import { fileURLToPath } from "node:url";
 import { defineConfig, loadEnv, type ViteUserConfig } from "vite-plus";
 import { voidPlugin } from "void";
 import {
@@ -14,13 +15,28 @@ const enabledLintProfiles = {
   tanstackQuery: true,
 } as const satisfies LintProfileSelection;
 
+const betterAuthEmailOTPClientResolver = {
+  name: "better-auth-email-otp-client-resolver",
+  enforce: "pre" as const,
+  resolveId: {
+    order: "pre" as const,
+    handler(source: string) {
+      if (source !== "better-auth/client/plugins") return null;
+      return fileURLToPath(import.meta.resolve(source));
+    },
+  },
+};
+
 const config: ViteUserConfig = {
   test: {
     include: ["**/*.test.ts"],
   },
   resolve: {
-    alias: {
-      "@": import.meta.dirname,
+    alias: { "@": import.meta.dirname },
+  },
+  environments: {
+    void_worker: {
+      resolve: { noExternal: ["better-auth"] },
     },
   },
   fmt: {
@@ -69,6 +85,7 @@ const config: ViteUserConfig = {
 function getPlugins(mode: string) {
   if (mode === "test") return [];
   return [
+    betterAuthEmailOTPClientResolver,
     voidPlugin(),
     voidReact({ react: { compiler: true }, viewTransitions: true }),
     tailwindcss(),

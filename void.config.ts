@@ -3,6 +3,7 @@ import { defineConfig } from "void/config";
 
 export default defineConfig({
   target: "cloudflare",
+  auth: { providers: ["email", "google"] },
   cloudflare: { name: "void-web" },
   worker: {
     compatibility_date: "2026-02-24",
