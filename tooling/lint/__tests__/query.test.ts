@@ -15,7 +15,7 @@ const tester = new RuleTester({
 const canonicalQueryDefinitions =
   queryPlugin.rules["canonical-query-definitions"];
 const noHardcodedQueryKeys = queryPlugin.rules["no-hardcoded-query-keys"];
-const queriesFile = "features/todos/queries.ts";
+const queriesFile = "features/projects/queries.ts";
 
 tester.run("canonical-query-definitions", canonicalQueryDefinitions, {
   valid: [
@@ -30,12 +30,12 @@ tester.run("canonical-query-definitions", canonicalQueryDefinitions, {
   ],
   invalid: [
     {
-      filename: "features/todos/use-todos.ts",
+      filename: "features/projects/use-projects.ts",
       code: 'import { queryOptions } from "@tanstack/react-query"; queryOptions({ queryKey: [] });',
       errors: [{ message: /only from the feature/u }],
     },
     {
-      filename: "features/todos/use-todos.ts",
+      filename: "features/projects/use-projects.ts",
       code: 'import * as query from "@tanstack/react-query"; query.queryOptions({ queryKey: [] });',
       errors: [{ message: /only from the feature/u }],
     },
@@ -51,21 +51,21 @@ tester.run("no-hardcoded-query-keys", noHardcodedQueryKeys, {
         queryOptions({ queryKey: userQueryKey() });`,
     },
     {
-      filename: "features/todos/use-todo-mutations.ts",
-      code: `import { todosQueryKey as keys } from "./queries";
+      filename: "features/projects/use-project-mutations.ts",
+      code: `import { projectsQueryKey as keys } from "./queries";
         client.invalidateQueries({ queryKey: keys("user-1") });`,
     },
     {
-      filename: "features/todos/use-todo-mutations.ts",
+      filename: "features/projects/use-project-mutations.ts",
       code: 'const metadata = { queryKey: ["display-only"] };',
     },
     {
-      filename: "features/todos/use-todo-mutations.ts",
-      code: 'import { todosQueryKey } from "./queries"; client.getQueryData(todosQueryKey());',
+      filename: "features/projects/use-project-mutations.ts",
+      code: 'import { projectsQueryKey } from "./queries"; client.getQueryData(projectsQueryKey());',
     },
     {
-      filename: "features/todos/use-todo-mutations.ts",
-      code: 'import { todosQueryKey as keyFactory } from "./queries"; client.getQueryData(keyFactory());',
+      filename: "features/projects/use-project-mutations.ts",
+      code: 'import { projectsQueryKey as keyFactory } from "./queries"; client.getQueryData(keyFactory());',
     },
   ],
   invalid: [
@@ -76,23 +76,23 @@ tester.run("no-hardcoded-query-keys", noHardcodedQueryKeys, {
       errors: [{ message: /query key factory/u }],
     },
     {
-      filename: "features/todos/use-todo-mutations.ts",
+      filename: "features/projects/use-project-mutations.ts",
       code: 'import { userKeys } from "./keys"; client.invalidateQueries({ queryKey: userKeys.list() });',
       errors: [{ message: /queries\.ts/u }],
     },
     {
-      filename: "features/todos/use-todo-mutations.ts",
+      filename: "features/projects/use-project-mutations.ts",
       code: 'client.invalidateQueries({ queryKey: ["users"] });',
       errors: [{ message: /queries\.ts/u }],
     },
     {
-      filename: "features/todos/use-todo-mutations.ts",
-      code: 'import { todosQueryKey } from "./queries"; function run(todosQueryKey: () => string[]) { client.getQueryData(todosQueryKey()); }',
+      filename: "features/projects/use-project-mutations.ts",
+      code: 'import { projectsQueryKey } from "./queries"; function run(projectsQueryKey: () => string[]) { client.getQueryData(projectsQueryKey()); }',
       errors: [{ message: /queries\.ts/u }],
     },
     {
-      filename: "features/todos/use-todo-mutations.ts",
-      code: 'import { todosQueryKey } from "./queries"; function run() { const todosQueryKey = () => ["fake"]; client.getQueryData(todosQueryKey()); }',
+      filename: "features/projects/use-project-mutations.ts",
+      code: 'import { projectsQueryKey } from "./queries"; function run() { const projectsQueryKey = () => ["fake"]; client.getQueryData(projectsQueryKey()); }',
       errors: [{ message: /queries\.ts/u }],
     },
   ],
