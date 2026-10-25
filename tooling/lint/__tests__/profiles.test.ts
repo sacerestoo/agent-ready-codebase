@@ -43,7 +43,7 @@ it("disables React rules without changing the other profiles", () => {
       expect.objectContaining({ name: "react-codebase" }),
     ]),
   );
-  expect(config.overrides).toHaveLength(commonRuleOverrides.length);
+  expect(config.overrides).toHaveLength(commonRuleOverrides.length + 1);
   expect(config.rules).toHaveProperty(
     "typed-fetch/require-typed-fetch",
     "error",
