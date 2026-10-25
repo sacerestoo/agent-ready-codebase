@@ -1,8 +1,6 @@
-import type Input from "@/shared/ui/input";
 import type { ComponentProps, ReactElement, ReactNode } from "react";
 import Field from "@/shared/ui/field";
-import InputGroup from "@/shared/ui/input-group";
-import InputGroupInput from "@/shared/ui/input-group-input";
+import { InputGroup, InputGroupInput } from "@/shared/ui/input-group";
 import Label from "@/shared/ui/label";
 import type { useAuthForm } from "../use-auth-form";
 
@@ -13,13 +11,13 @@ const authField = ({
   input,
 }: Readonly<{
   label: ReactNode;
-  input: Readonly<ComponentProps<typeof Input>>;
+  input: Readonly<ComponentProps<"input">>;
 }>): ReactElement => (
   <Field>
     <Label htmlFor={input.id}>{label}</Label>
-    <InputGroup>
+    <InputGroup size="2xl">
       <InputGroupInput
-        className="border-0 bg-transparent shadow-none focus-visible:ring-0"
+        className="bg-transparent shadow-none focus-visible:ring-0"
         {...input}
       />
     </InputGroup>
