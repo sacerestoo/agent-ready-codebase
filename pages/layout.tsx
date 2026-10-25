@@ -1,8 +1,7 @@
+import { Toaster } from "@/shared/ui/toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState, type ReactNode } from "react";
 import "@/styles/globals.css";
-import "@/styles/auth-success.css";
-import "@/styles/loading.css";
+import { useState, type ReactNode } from "react";
 
 export default function Layout({
   children,
@@ -21,6 +20,9 @@ export default function Layout({
   );
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <Toaster />
+    </QueryClientProvider>
   );
 }

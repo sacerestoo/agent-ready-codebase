@@ -3,6 +3,9 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 
+@import "./auth-success.css";
+@import "./loading.css";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

@@ -1,18 +1,10 @@
 import type { ReactElement } from "react";
-import { SignOutButton } from "@/features/auth";
-import { Heading } from "@/shared/ui/typography";
-import type { Props } from "./dashboard.server";
+import { UserMenu } from "@/features/auth";
 
-export default function DashboardPage({ user }: Readonly<Props>): ReactElement {
+export default function DashboardPage(): ReactElement {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 py-12">
-      <Heading
-        as="h1"
-        size={6}
-      >
-        Welcome, {user.name}
-      </Heading>
-      <SignOutButton />
+    <main className="flex min-h-screen justify-end p-4">
+      <UserMenu />
     </main>
   );
 }

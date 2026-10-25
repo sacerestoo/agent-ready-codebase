@@ -1,20 +1,23 @@
 import type { ReactNode } from "react";
-import { AuthForm, SignOutButton } from "@/features/auth";
-import { BillingDemo } from "@/features/billing";
-import type { Props } from "./index.server";
+import Button from "@/shared/ui/button";
 
-export default function HomePage({
-  user,
-  billing,
-}: Readonly<Props>): ReactNode {
-  return user ? (
+export default function HomePage(): ReactNode {
+  return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 py-12">
-      <SignOutButton />
-      {billing.subscriptionsEnabled && <BillingDemo billing={billing} />}
-    </main>
-  ) : (
-    <main className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6">
-      <AuthForm />
+      <div className="flex gap-3">
+        <Button
+          variant={"outline"}
+          render={<a href="/dashboard" />}
+        >
+          Dashboard
+        </Button>
+        <Button
+          variant={"outline"}
+          render={<a href="/sign-in" />}
+        >
+          Sign in
+        </Button>
+      </div>
     </main>
   );
 }
