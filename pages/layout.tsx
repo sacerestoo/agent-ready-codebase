@@ -1,6 +1,7 @@
 import { Toaster } from "@/shared/ui/toast";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TooltipProvider } from "@/shared/ui/tooltip";
 import "@/styles/globals.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 
 export default function Layout({
@@ -21,7 +22,7 @@ export default function Layout({
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <TooltipProvider>{children}</TooltipProvider>
       <Toaster />
     </QueryClientProvider>
   );
