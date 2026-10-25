@@ -5,82 +5,98 @@ import {
 } from "react";
 import { authClient } from "../../auth-client";
 
-type AuthValues = {
-  name: string;
+type AuthResult = Readonly<{
+  error?: Readonly<{ message?: string | null }> | null;
+}>;
+type AuthResultPromise = Readonly<Promise<AuthResult>>;
+
+const valueChange =
+  (setValue: (value: string) => void): ChangeEventHandler<HTMLInputElement> =>
+  (event): void => {
+    setValue(event.currentTarget.value);
+  };
+
+type AuthFormState = {
   email: string;
-  password: string;
-};
-
-type AuthRequest = AuthValues & {
-  isSigningUp: boolean;
-};
-
-type AuthFormValues = AuthValues & {
-  onNameChange: ChangeEventHandler<HTMLInputElement>;
-  onEmailChange: ChangeEventHandler<HTMLInputElement>;
-  onPasswordChange: ChangeEventHandler<HTMLInputElement>;
-};
-
-type AuthRequestState = {
+  otp: string;
   error: string;
   isSubmitting: boolean;
+  isOtpSent: boolean;
+  onEmailChange: ChangeEventHandler<HTMLInputElement>;
+  onOtpChange: ChangeEventHandler<HTMLInputElement>;
   onSubmit: SubmitEventHandler<HTMLFormElement>;
+  onGoogleSignIn: () => void;
 };
 
-export const useAuthValues = (): AuthFormValues => {
-  const [name, setName] = useState("");
+const handleAuthRequest = async (
+  request: AuthResultPromise,
+  setError: (error: string) => void,
+  setIsSubmitting: (isSubmitting: boolean) => void,
+  onSuccess: "reload" | "sent",
+  setIsOtpSent: (sent: boolean) => void,
+): Promise<void> => {
+  setError("");
+  setIsSubmitting(true);
+  try {
+    const result = await request;
+    if (result.error) {
+      setError(result.error.message ?? "요청에 실패했습니다.");
+      return;
+    }
+    if (onSuccess === "sent") {
+      setIsOtpSent(true);
+      return;
+    }
+    window.location.reload();
+  } catch {
+    setError("요청을 처리하지 못했습니다. 다시 시도해 주세요.");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+export const useAuthForm = (): AuthFormState => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const onNameChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
-    setName(event.currentTarget.value);
-  };
-  const onEmailChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
-    setEmail(event.currentTarget.value);
-  };
-  const onPasswordChange: ChangeEventHandler<HTMLInputElement> = (
-    event,
-  ): void => {
-    setPassword(event.currentTarget.value);
-  };
-  return {
-    name,
-    email,
-    password,
-    onNameChange,
-    onEmailChange,
-    onPasswordChange,
-  };
-};
-
-export const useAuthRequest = ({
-  name,
-  email,
-  password,
-  isSigningUp,
-}: Readonly<AuthRequest>): AuthRequestState => {
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  async function submit(): Promise<void> {
-    setError("");
-    setIsSubmitting(true);
-    try {
-      const result = isSigningUp
-        ? await authClient.signUp.email({ name: name.trim(), email, password })
-        : await authClient.signIn.email({ email, password });
-      if (result.error) {
-        setError(result.error.message ?? "로그인에 실패했습니다.");
-        return;
-      }
-      window.location.reload();
-    } catch {
-      setError("요청을 처리하지 못했습니다. 다시 시도해 주세요.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const onEmailChange = valueChange(setEmail);
+  const onOtpChange = valueChange(setOtp);
   const onSubmit: SubmitEventHandler<HTMLFormElement> = (event): void => {
     event.preventDefault();
-    void submit();
+    const request = isOtpSent
+      ? authClient.signIn.emailOtp({
+          email,
+          otp,
+        })
+      : authClient.emailOtp.sendVerificationOtp({ email, type: "sign-in" });
+    void handleAuthRequest(
+      request,
+      setError,
+      setIsSubmitting,
+      isOtpSent ? "reload" : "sent",
+      setIsOtpSent,
+    );
   };
-  return { error, isSubmitting, onSubmit };
+  const onGoogleSignIn = (): void => {
+    void handleAuthRequest(
+      authClient.signIn.social({ provider: "google", callbackURL: "/" }),
+      setError,
+      setIsSubmitting,
+      "reload",
+      setIsOtpSent,
+    );
+  };
+  return {
+    email,
+    otp,
+    error,
+    isSubmitting,
+    isOtpSent,
+    onEmailChange,
+    onOtpChange,
+    onSubmit,
+    onGoogleSignIn,
+  };
 };

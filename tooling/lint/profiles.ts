@@ -54,6 +54,12 @@ export function createLintConfig(selection: LintProfileSelection) {
             },
           ]
         : []),
+      {
+        files: ["pages/layout.tsx"],
+        rules: {
+          "import/no-unassigned-import": ["error", { allow: ["**/*.css"] }],
+        },
+      },
       ...commonRuleOverrides,
     ],
   } satisfies NonNullable<ViteUserConfig["lint"]>;

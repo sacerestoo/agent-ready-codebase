@@ -14,7 +14,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["bun-types", "void/env"],
+    "types": ["bun-types", "vite/client", "void/env"],
     "jsx": "react-jsx"
   },
   "include": ["**/*.ts", "**/*.tsx"],

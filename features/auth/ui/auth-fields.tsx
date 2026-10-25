@@ -1,62 +1,59 @@
-import type { ChangeEventHandler, ReactElement } from "react";
+import type Input from "@/shared/ui/input";
+import type { ComponentProps, ReactElement, ReactNode } from "react";
+import Field from "@/shared/ui/field";
+import InputGroup from "@/shared/ui/input-group";
+import InputGroupInput from "@/shared/ui/input-group-input";
+import Label from "@/shared/ui/label";
+import type { useAuthForm } from "../use-auth-form";
 
-type AuthFieldsProps = {
-  email: string;
-  onEmailChange: ChangeEventHandler<HTMLInputElement>;
-  onNameChange: ChangeEventHandler<HTMLInputElement>;
-  onPasswordChange: ChangeEventHandler<HTMLInputElement>;
-  isSigningUp: boolean;
-  name: string;
-  password: string;
-};
+type AuthFieldsProps = { auth: ReturnType<typeof useAuthForm> };
+
+const authField = ({
+  label,
+  input,
+}: Readonly<{
+  label: ReactNode;
+  input: Readonly<ComponentProps<typeof Input>>;
+}>): ReactElement => (
+  <Field>
+    <Label htmlFor={input.id}>{label}</Label>
+    <InputGroup>
+      <InputGroupInput
+        className="border-0 bg-transparent shadow-none focus-visible:ring-0"
+        {...input}
+      />
+    </InputGroup>
+  </Field>
+);
 
 export default function AuthFields({
-  email,
-  onEmailChange,
-  onNameChange,
-  onPasswordChange,
-  isSigningUp,
-  name,
-  password,
+  auth,
 }: Readonly<AuthFieldsProps>): ReactElement {
   return (
     <>
-      {isSigningUp && (
-        <label className="block space-y-2 text-sm font-medium">
-          이름
-          <input
-            autoComplete="name"
-            className="h-11 w-full rounded-xl border bg-background px-3 font-normal outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            maxLength={80}
-            onChange={onNameChange}
-            required
-            value={name}
-          />
-        </label>
-      )}
-      <label className="block space-y-2 text-sm font-medium">
-        이메일
-        <input
-          autoComplete="email"
-          className="h-11 w-full rounded-xl border bg-background px-3 font-normal outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          onChange={onEmailChange}
-          required
-          type="email"
-          value={email}
-        />
-      </label>
-      <label className="block space-y-2 text-sm font-medium">
-        비밀번호
-        <input
-          autoComplete={isSigningUp ? "new-password" : "current-password"}
-          className="h-11 w-full rounded-xl border bg-background px-3 font-normal outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          minLength={8}
-          onChange={onPasswordChange}
-          required
-          type="password"
-          value={password}
-        />
-      </label>
+      {authField({
+        label: "이메일",
+        input: {
+          id: "auth-email",
+          autoComplete: "email",
+          onChange: auth.onEmailChange,
+          required: true,
+          type: "email",
+          value: auth.email,
+        },
+      })}
+      {auth.isOtpSent &&
+        authField({
+          label: "이메일 인증 코드",
+          input: {
+            id: "auth-otp",
+            autoComplete: "one-time-code",
+            inputMode: "numeric",
+            onChange: auth.onOtpChange,
+            required: true,
+            value: auth.otp,
+          },
+        })}
     </>
   );
 }
