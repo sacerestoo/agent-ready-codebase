@@ -32,7 +32,7 @@ const handleAuthRequest = async (
   request: AuthResultPromise,
   setError: (error: string) => void,
   setIsSubmitting: (isSubmitting: boolean) => void,
-  onSuccess: "reload" | "sent",
+  onSuccess: "reload" | "sent" | "redirect",
   setIsOtpSent: (sent: boolean) => void,
 ): Promise<void> => {
   setError("");
@@ -47,7 +47,7 @@ const handleAuthRequest = async (
       setIsOtpSent(true);
       return;
     }
-    window.location.reload();
+    if (onSuccess === "reload") window.location.reload();
   } catch {
     setError("요청을 처리하지 못했습니다. 다시 시도해 주세요.");
   } finally {
@@ -84,7 +84,7 @@ export const useAuthForm = (): AuthFormState => {
       authClient.signIn.social({ provider: "google", callbackURL: "/" }),
       setError,
       setIsSubmitting,
-      "reload",
+      "redirect",
       setIsOtpSent,
     );
   };

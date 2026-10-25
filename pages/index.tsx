@@ -13,7 +13,7 @@ export default function HomePage({
       {billing.subscriptionsEnabled && <BillingDemo billing={billing} />}
     </main>
   ) : (
-    <main className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12 sm:px-6">
+    <main className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6">
       <AuthForm />
     </main>
   );
