@@ -1,5 +1,6 @@
 import type { OxlintOverride } from "vite-plus/lint";
 import {
+  architectureDirectories,
   applicationDirectoryGlobs,
   applicationSourceGlobs,
   featureUiSourceGlobs,
@@ -97,5 +98,18 @@ export const commonRuleOverrides = [
   {
     files: applicationDirectoryGlobs,
     rules: { "codebase/camel-case-identifiers": "error" },
+  },
+  {
+    files: [`${architectureDirectories.shared}/ui/**/*.tsx`],
+    rules: {
+      "typescript/explicit-function-return-type": "off",
+      "typescript/prefer-readonly-parameter-types": "off",
+      "typescript/strict-boolean-expressions": [
+        "error",
+        { allowNullableBoolean: true },
+      ],
+      "eslint/eqeqeq": ["error", "always", { null: "ignore" }],
+      "eslint/max-lines-per-function": ["error", 70],
+    },
   },
 ] satisfies OxlintOverride[];

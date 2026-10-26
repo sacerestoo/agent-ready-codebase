@@ -13,7 +13,7 @@ function ScrollArea({
   orientation = "vertical",
   showScrollbar = true,
   ...props
-}: Readonly<ScrollAreaProps>): React.ReactElement {
+}: ScrollAreaProps) {
   return (
     <ScrollAreaPrimitive.Root
       data-slot="scroll-area"
@@ -44,7 +44,7 @@ function ScrollBar({
   className,
   orientation = "vertical",
   ...props
-}: Readonly<ScrollAreaPrimitive.Scrollbar.Props>): React.ReactElement {
+}: ScrollAreaPrimitive.Scrollbar.Props) {
   return (
     <ScrollAreaPrimitive.Scrollbar
       data-slot="scroll-area-scrollbar"

@@ -56,6 +56,7 @@ function checkCamelCase(
   context: Readonly<RuleContext>,
   node: unknown,
   allowHttpMethod = false,
+  allowPascalCase = false,
 ): void {
   if (!isAstNode(node)) return;
   const name = getName(node);
@@ -63,7 +64,8 @@ function checkCamelCase(
     name === undefined ||
     name === "" ||
     (allowHttpMethod && httpMethods.has(name)) ||
-    camelCasePattern.test(name)
+    camelCasePattern.test(name) ||
+    (allowPascalCase && pascalCasePattern.test(name))
   ) {
     return;
   }
@@ -72,6 +74,36 @@ function checkCamelCase(
     node,
     message: `Identifier "${name}" must use camelCase.`,
   });
+}
+
+function isReactBinding(node: unknown): boolean {
+  const id = getChild(node, "id");
+  const initializer = getChild(node, "init");
+  const name = getName(id);
+  if (
+    id?.type !== "Identifier" ||
+    name === undefined ||
+    !componentNamePattern.test(name) ||
+    initializer === undefined
+  ) {
+    return false;
+  }
+
+  if (containsJsx(initializer)) return true;
+
+  const property = getChild(initializer, "property");
+  if (initializer.type === "CallExpression") {
+    return (
+      getName(getChild(getChild(initializer, "callee"), "property")) ===
+      "createContext"
+    );
+  }
+
+  return (
+    initializer.type === "MemberExpression" &&
+    getName(property) === "Root" &&
+    getName(getChild(initializer, "object"))?.endsWith("Primitive") === true
+  );
 }
 
 function checkPascalCase(context: Readonly<RuleContext>, node: unknown): void {
@@ -123,7 +155,7 @@ function createProgramListeners(
     VariableDeclarator(input: unknown): void {
       if (!isAstNode(input)) return;
       for (const identifier of getBindingNames(getChild(input, "id"))) {
-        checkCamelCase(context, identifier, true);
+        checkCamelCase(context, identifier, true, isReactBinding(input));
       }
     },
     CatchClause(input: unknown): void {

@@ -2,9 +2,7 @@ import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { cn } from "cn";
 import * as React from "react";
 
-function Popover({
-  ...props
-}: Readonly<PopoverPrimitive.Root.Props>): React.ReactElement {
+function Popover({ ...props }: PopoverPrimitive.Root.Props) {
   return (
     <PopoverPrimitive.Root
       data-slot="popover"
@@ -13,9 +11,7 @@ function Popover({
   );
 }
 
-function PopoverTrigger({
-  ...props
-}: Readonly<PopoverPrimitive.Trigger.Props>): React.ReactElement {
+function PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {
   return (
     <PopoverPrimitive.Trigger
       data-slot="popover-trigger"
@@ -31,13 +27,11 @@ function PopoverContent({
   side = "bottom",
   sideOffset = 4,
   ...props
-}: Readonly<
-  PopoverPrimitive.Popup.Props &
-    Pick<
-      PopoverPrimitive.Positioner.Props,
-      "align" | "alignOffset" | "side" | "sideOffset"
-    >
->): React.ReactElement {
+}: PopoverPrimitive.Popup.Props &
+  Pick<
+    PopoverPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset"
+  >) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
@@ -60,10 +54,7 @@ function PopoverContent({
   );
 }
 
-function PopoverHeader({
-  className,
-  ...props
-}: Readonly<React.ComponentProps<"div">>): React.ReactElement {
+function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="popover-header"
@@ -73,10 +64,7 @@ function PopoverHeader({
   );
 }
 
-function PopoverTitle({
-  className,
-  ...props
-}: Readonly<PopoverPrimitive.Title.Props>): React.ReactElement {
+function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
   return (
     <PopoverPrimitive.Title
       data-slot="popover-title"
@@ -89,7 +77,7 @@ function PopoverTitle({
 function PopoverDescription({
   className,
   ...props
-}: Readonly<PopoverPrimitive.Description.Props>): React.ReactElement {
+}: PopoverPrimitive.Description.Props) {
   return (
     <PopoverPrimitive.Description
       data-slot="popover-description"
