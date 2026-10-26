@@ -78,7 +78,7 @@ const config: ViteUserConfig = {
     cache: true,
   },
   staged: {
-    "*": "vp check --fix",
+    "*.{js,jsx,ts,tsx,json,jsonc,css,md,mdx}": "vp fmt",
   },
 };
 
