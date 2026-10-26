@@ -38,16 +38,6 @@ export default {
       },
     },
     {
-      name: "feature-internals-not-public",
-      comment: "Import features through their index.ts entrypoint.",
-      severity: "error",
-      from: { pathNot: `^${featurePath}/` },
-      to: {
-        path: `^${featurePath}/[^/]+/`,
-        pathNot: `^${featurePath}/[^/]+/index[.]ts$`,
-      },
-    },
-    {
       name: "shared-not-to-app-code",
       comment: "Shared code must not depend on app entrypoints or features.",
       severity: "error",

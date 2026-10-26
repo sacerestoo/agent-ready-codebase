@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { AuthForm } from "@/features/auth";
+import AuthForm from "@/features/auth/ui/auth-form";
 
 export default function SignInPage(): ReactElement {
   return (

@@ -1,4 +1,4 @@
-import { getCreemCustomerId } from "@/features/billing";
+import { getCreemCustomerId } from "@/features/billing/customer";
 import { createCheckout } from "@creem_io/better-auth/server";
 import * as v from "valibot";
 import { defineHandler } from "void";

@@ -3,9 +3,12 @@ import { cn } from "cn";
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react";
 import * as React from "react";
 
-const Select = SelectPrimitive.Root;
+const selectRoot = SelectPrimitive.Root;
 
-function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
+function SelectGroup({
+  className,
+  ...props
+}: Readonly<SelectPrimitive.Group.Props>): React.ReactElement {
   return (
     <SelectPrimitive.Group
       data-slot="select-group"
@@ -15,7 +18,10 @@ function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   );
 }
 
-function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
+function SelectValue({
+  className,
+  ...props
+}: Readonly<SelectPrimitive.Value.Props>): React.ReactElement {
   return (
     <SelectPrimitive.Value
       data-slot="select-value"
@@ -30,9 +36,11 @@ function SelectTrigger({
   size = "lg",
   children,
   ...props
-}: SelectPrimitive.Trigger.Props & {
-  size?: "sm" | "md" | "lg" | "xl";
-}) {
+}: Readonly<
+  SelectPrimitive.Trigger.Props & {
+    size?: "sm" | "md" | "lg" | "xl";
+  }
+>): React.ReactElement {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
@@ -75,11 +83,13 @@ function SelectContent({
   alignOffset = 0,
   alignItemWithTrigger = false,
   ...props
-}: SelectPrimitive.Popup.Props &
-  Pick<
-    SelectPrimitive.Positioner.Props,
-    "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
-  >) {
+}: Readonly<
+  SelectPrimitive.Popup.Props &
+    Pick<
+      SelectPrimitive.Positioner.Props,
+      "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
+    >
+>): React.ReactElement {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Positioner
@@ -114,7 +124,7 @@ function SelectContent({
 function SelectLabel({
   className,
   ...props
-}: SelectPrimitive.GroupLabel.Props) {
+}: Readonly<SelectPrimitive.GroupLabel.Props>): React.ReactElement {
   return (
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
@@ -128,7 +138,7 @@ function SelectItem({
   className,
   children,
   ...props
-}: SelectPrimitive.Item.Props) {
+}: Readonly<SelectPrimitive.Item.Props>): React.ReactElement {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
@@ -155,7 +165,7 @@ function SelectItem({
 function SelectSeparator({
   className,
   ...props
-}: SelectPrimitive.Separator.Props) {
+}: Readonly<SelectPrimitive.Separator.Props>): React.ReactElement {
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
@@ -171,7 +181,9 @@ function SelectSeparator({
 function SelectScrollUpButton({
   className,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollUpArrow>) {
+}: Readonly<
+  React.ComponentProps<typeof SelectPrimitive.ScrollUpArrow>
+>): React.ReactElement {
   return (
     <SelectPrimitive.ScrollUpArrow
       data-slot="select-scroll-up-button"
@@ -189,7 +201,9 @@ function SelectScrollUpButton({
 function SelectScrollDownButton({
   className,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollDownArrow>) {
+}: Readonly<
+  React.ComponentProps<typeof SelectPrimitive.ScrollDownArrow>
+>): React.ReactElement {
   return (
     <SelectPrimitive.ScrollDownArrow
       data-slot="select-scroll-down-button"
@@ -205,7 +219,7 @@ function SelectScrollDownButton({
 }
 
 export {
-  Select,
+  selectRoot as Select,
   SelectContent,
   SelectGroup,
   SelectItem,

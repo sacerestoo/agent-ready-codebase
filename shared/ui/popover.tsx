@@ -2,7 +2,9 @@ import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { cn } from "cn";
 import * as React from "react";
 
-function Popover({ ...props }: PopoverPrimitive.Root.Props) {
+function Popover({
+  ...props
+}: Readonly<PopoverPrimitive.Root.Props>): React.ReactElement {
   return (
     <PopoverPrimitive.Root
       data-slot="popover"
@@ -11,7 +13,9 @@ function Popover({ ...props }: PopoverPrimitive.Root.Props) {
   );
 }
 
-function PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {
+function PopoverTrigger({
+  ...props
+}: Readonly<PopoverPrimitive.Trigger.Props>): React.ReactElement {
   return (
     <PopoverPrimitive.Trigger
       data-slot="popover-trigger"
@@ -27,11 +31,13 @@ function PopoverContent({
   side = "bottom",
   sideOffset = 4,
   ...props
-}: PopoverPrimitive.Popup.Props &
-  Pick<
-    PopoverPrimitive.Positioner.Props,
-    "align" | "alignOffset" | "side" | "sideOffset"
-  >) {
+}: Readonly<
+  PopoverPrimitive.Popup.Props &
+    Pick<
+      PopoverPrimitive.Positioner.Props,
+      "align" | "alignOffset" | "side" | "sideOffset"
+    >
+>): React.ReactElement {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
@@ -54,7 +60,10 @@ function PopoverContent({
   );
 }
 
-function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
+function PopoverHeader({
+  className,
+  ...props
+}: Readonly<React.ComponentProps<"div">>): React.ReactElement {
   return (
     <div
       data-slot="popover-header"
@@ -64,7 +73,10 @@ function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
+function PopoverTitle({
+  className,
+  ...props
+}: Readonly<PopoverPrimitive.Title.Props>): React.ReactElement {
   return (
     <PopoverPrimitive.Title
       data-slot="popover-title"
@@ -77,7 +89,7 @@ function PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {
 function PopoverDescription({
   className,
   ...props
-}: PopoverPrimitive.Description.Props) {
+}: Readonly<PopoverPrimitive.Description.Props>): React.ReactElement {
   return (
     <PopoverPrimitive.Description
       data-slot="popover-description"

@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 import { cn } from "cn";
 import { motion } from "motion/react";
@@ -27,9 +28,11 @@ function Switch({
   disabled,
   size = "default",
   ...props
-}: SwitchPrimitive.Root.Props & {
-  size?: "sm" | "md" | "default";
-}) {
+}: Readonly<
+  SwitchPrimitive.Root.Props & {
+    size?: "sm" | "md" | "default";
+  }
+>): ReactElement {
   const motionSize = size === "md" ? "md" : "sm";
 
   return (
@@ -42,8 +45,8 @@ function Switch({
         <motion.button
           animate="rest"
           initial={false}
-          whileHover={disabled ? undefined : "hover"}
-          whileTap={disabled ? undefined : "press"}
+          whileHover={disabled === true ? undefined : "hover"}
+          whileTap={disabled === true ? undefined : "press"}
         />
       }
       className={cn(

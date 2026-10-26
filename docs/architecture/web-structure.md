@@ -20,21 +20,20 @@ Do keep page-level composition in `pages/` and domain code in its feature:
 pages/index.tsx
 features/
   auth/
-    index.ts
     ui/
   projects/
-    index.ts
     api.ts
     queries.ts
     ui/
     use-projects.ts
 ```
 
-Do import a feature through its `index.ts` from outside that feature:
+Do import the source file directly:
 
 ```tsx
-import { AuthForm, SignOutButton } from "@/features/auth";
-import ProjectsApp from "@/features/projects";
+import AuthForm from "@/features/auth/ui/auth-form";
+import SignOutButton from "@/features/auth/ui/sign-out-button";
+import ProjectsApp from "@/features/projects/ui/projects-app";
 ```
 
 Do let a page compose features and pass a generic UI slot when needed:
@@ -46,14 +45,12 @@ Do let a page compose features and pass a generic UI slot when needed:
 />
 ```
 
-Do not put authentication UI in `features/projects/`, import another feature
-from inside a feature, or import a feature's internal file from a page:
+Do not put authentication UI in `features/projects/` or import another feature
+from inside a feature:
 
 ```tsx
 // Do not do this inside features/projects/.
 import SignOutButton from "@/features/auth/ui/sign-out-button";
-// Do not bypass the feature's public entry point from a page.
-import ProjectRow from "@/features/projects/ui/project-row";
 ```
 
 Move code shared by multiple features to `shared/`. Shared code must not import

@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
 import { cn } from "cn";
 
@@ -6,7 +7,7 @@ function TooltipProvider({
   closeDelay = 0,
   timeout = 400,
   ...props
-}: TooltipPrimitive.Provider.Props) {
+}: Readonly<TooltipPrimitive.Provider.Props>): ReactElement {
   return (
     <TooltipPrimitive.Provider
       data-slot="tooltip-provider"
@@ -18,7 +19,9 @@ function TooltipProvider({
   );
 }
 
-function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
+function Tooltip({
+  ...props
+}: Readonly<TooltipPrimitive.Root.Props>): ReactElement {
   return (
     <TooltipPrimitive.Root
       data-slot="tooltip"
@@ -27,7 +30,9 @@ function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
   );
 }
 
-function TooltipTrigger({ ...props }: TooltipPrimitive.Trigger.Props) {
+function TooltipTrigger({
+  ...props
+}: Readonly<TooltipPrimitive.Trigger.Props>): ReactElement {
   return (
     <TooltipPrimitive.Trigger
       data-slot="tooltip-trigger"
@@ -44,11 +49,13 @@ function TooltipContent({
   alignOffset = 0,
   children,
   ...props
-}: TooltipPrimitive.Popup.Props &
-  Pick<
-    TooltipPrimitive.Positioner.Props,
-    "align" | "alignOffset" | "side" | "sideOffset"
-  >) {
+}: Readonly<
+  TooltipPrimitive.Popup.Props &
+    Pick<
+      TooltipPrimitive.Positioner.Props,
+      "align" | "alignOffset" | "side" | "sideOffset"
+    >
+>): ReactElement {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Positioner
